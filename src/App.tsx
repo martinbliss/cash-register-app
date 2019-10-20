@@ -1,23 +1,25 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import { CashRegisterContainerComponent, CashRegisterContainer } from './containers/cash-register-container.container';
 
 const App: React.FC = () => {
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
+        {/* <img src={logo} className="App-logo" alt="logo" /> */}
+        {/* <p>
           Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
+        </p> */}
+        <CashRegisterContainer />
+        {/* <a
           className="App-link"
           href="https://reactjs.org"
           target="_blank"
           rel="noopener noreferrer"
         >
           Learn React
-        </a>
+        </a> */}
       </header>
     </div>
   );

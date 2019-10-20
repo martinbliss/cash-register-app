@@ -1,0 +1,32 @@
+{
+    "banana": {
+        "description": "1 Banana",
+        "price": 1.12,
+        "image": "banana.gif"
+    },
+    "coke": {
+        "description": "1 Coke",
+        "price": 2.25,
+        "image": "coke.jpeg"
+    },
+    "sunglasses": {
+        "description": "1 Pair of Sunglasses",
+        "price": 20.99,
+        "image": "sunglasses.gif"
+    },
+    "coffee": {
+        "description": "1 Bag of Fresh Coffee Beans from Guadalajara",
+        "price": 19.99,
+        "image": "coffee_beans.jpg"
+    },
+    "hat": {
+        "description": "1 Hat",
+        "price": 15.99,
+        "image": "hat.gif"
+    },
+    "pizza": {
+        "description": "1 Whole Pepperoni Pizza",
+        "price": 35.99,
+        "image": "pizza.jpeg"
+    }
+}
