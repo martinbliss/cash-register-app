@@ -25,7 +25,7 @@ const testCases: TestCase[] = [
     {
         total: 189.29,
         tender: 120,
-        balance: -69.28999999999999, // don't ask
+        balance: -69.29,
         denominations: {}
     },
     {
@@ -42,6 +42,15 @@ const testCases: TestCase[] = [
         balance: 5,
         denominations: {
             fives: 1
+        }
+    },
+    {
+        total: 59,
+        tender: 70,
+        balance: 11,
+        denominations: {
+            tens: 1,
+            ones: 1
         }
     }
 ];

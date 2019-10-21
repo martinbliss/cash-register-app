@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { KeyPad, CurrencyInput, TenderInput } from '../components';
 import styled from 'styled-components';
 import { InventoryBar, Item } from '../components/inventoryBar.component';
@@ -6,12 +6,16 @@ import _ from 'lodash';
 import { Cart } from '../components/cart.component';
 import TaxConfig from '../config/tax.json';
 import { TenderChangeAmount, TenderChangeDisplay } from '../components/tenderChangeDisplay.component';
+import { makeChange } from '../util/changeMaker';
+import Decimal from 'decimal.js';
+
+Decimal.set({ precision: 5, rounding: 2 });
 
 const Container = styled.div`
     display: flex;
     flex-direction: row;
     align-items: flex-start;    
-    min-height: 2800px;
+    // min-height: 2800px;
 `;
 
 const MainPanel = styled.div`
@@ -39,39 +43,23 @@ const Panel = styled.div`
 
 export const CashRegisterContainerComponent = () => {
     const [items, setItems] = useState<Item[]>([]);
+    const [tender, setTender] = useState(0);
+    const [changeAmount, setChangeAmount] = useState({} as TenderChangeAmount);
+
+    const subTotal = useMemo(() => _.sum(items.map(i => i.price)), [items]);
+    const total = new Decimal(subTotal).mul(1 + TaxConfig.taxRate).toNumber();
 
     const handleItemSelection = (item: Item) => setItems([...items, item]);
-    const handleTender = (amount: number) => { console.info('tender recd', amount); };
-
-    const total = _.sum(items.map(i => i.price));
-
-    const tenderChangeSample: TenderChangeAmount = {
-        total: 200.00,
-        denominations: {
-            hundreds: {
-                caption: '$100',
-                count: 2
-            },
-            tens: {
-                caption: '$10',
-                count: 1
-            },
-            fives: {
-                caption: '$5',
-                count: 1
-            },
-            ones: {
-                caption: '$1',
-                count: 1
-            }
-        }
+    const handleTender = (tender: number) => {
+        setTender(tender);
+        setChangeAmount(makeChange(total, tender))
     };
 
     return <Container>
         <MainPanel>
             <TotalContainer>
-                <span>Total: </span>
-                <CurrencyInput ariaLabel="total" value={total} disabled />
+                <span>Sub-Total: </span>
+                <CurrencyInput ariaLabel="total" value={subTotal} disabled />
             </TotalContainer>
             <div>
                 <InventoryBar onItemSelected={handleItemSelection} />
@@ -81,7 +69,7 @@ export const CashRegisterContainerComponent = () => {
                     <TenderInput onTender={handleTender} />
                 </div>
                 <TenderContainer>
-                    <TenderChangeDisplay changeAmount={tenderChangeSample} />
+                    <TenderChangeDisplay changeAmount={changeAmount} />
                 </TenderContainer>
             </TenderContainer>
 

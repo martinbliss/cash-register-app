@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { CurrencyInput } from './currencyInput.component';
 
 export interface TenderChangeAmount {
-    total: number;
+    balance: number;
     denominations: {
         [key: string]: {
             caption: string;
@@ -13,7 +13,7 @@ export interface TenderChangeAmount {
 };
 
 interface Props {
-    changeAmount: TenderChangeAmount;
+    changeAmount?: TenderChangeAmount;
 }
 
 const Container = styled.div`
@@ -43,8 +43,10 @@ const DenominationContent = styled.div`
     border-bottom: 1px dashed white;
 `;
 
-export const TenderChangeDisplay = ({ changeAmount }: Props) => {
-    const { total, denominations } = changeAmount;
+const emptyChangeAmountValue: TenderChangeAmount = { balance: 0, denominations: {} };
+
+export const TenderChangeDisplay = ({ changeAmount = emptyChangeAmountValue }: Props) => {
+    const { balance = 0, denominations = {} } = changeAmount;
 
     const amountElements = Object.keys(denominations).map(key => denominations[key])
         .map((denomination, index) => <DenominationRow key={index}>
@@ -59,7 +61,7 @@ export const TenderChangeDisplay = ({ changeAmount }: Props) => {
 
     return <Container>
         <div>
-            Change Amount: <CurrencyInput disabled value={total} />
+            Change Amount: <CurrencyInput disabled value={balance} />
         </div>
         <div>
             Denominations:

@@ -1,6 +1,9 @@
 import denominationConfiguration from '../config/denominations.json';
 import _ from 'lodash';
-7
+import Decimal from 'decimal.js';
+
+Decimal.set({ precision: 5, rounding: 2 });
+
 interface DenominationConfiguration {
     [key: string]: {
         caption: string;
@@ -23,7 +26,7 @@ export interface TransactionResult {
 }
 
 export const makeChange = (total: number, tender: number): TransactionResult => {
-    const balance = tender - total;
+    const balance = new Decimal(tender).minus(total).toNumber();
 
     return {
         total,
@@ -36,17 +39,17 @@ export const makeChange = (total: number, tender: number): TransactionResult => 
 const getDenominations = (balance: number): Denominations => {
     const rankedDenominations = _.orderBy(Object.keys(denominationConfiguration).map(key => ({ key, ...(denominationConfiguration as DenominationConfiguration)[key] })), ['value'], ['desc']);
 
-    let remainingBalance = balance;
+    let remainingBalance = new Decimal(balance);
     const result = rankedDenominations.reduce((sum, n) => {
-        if (remainingBalance > 0) {
-            const splitRemainder = Math.floor((remainingBalance / n.value));
+        if (remainingBalance.gt(0)) {
+            const splitRemainder = remainingBalance.dividedBy(n.value).floor();
 
-            if (splitRemainder >= 1) {
-                remainingBalance -= (n.value * splitRemainder);
+            if (splitRemainder.gte(1)) {
+                remainingBalance = remainingBalance.minus(new Decimal(n.value).times(splitRemainder));
 
                 sum[n.key] = {
                     caption: n.caption,
-                    count: splitRemainder
+                    count: splitRemainder.toNumber()
                 };
             }
         }

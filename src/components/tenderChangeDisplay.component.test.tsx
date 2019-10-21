@@ -4,43 +4,55 @@ import { TenderChangeDisplay, TenderChangeAmount } from './tenderChangeDisplay.c
 
 it('should show a change amount', async () => {
     const sampleAmounts: TenderChangeAmount = {
-        total: 83.22,
+        balance: 83.22,
         denominations: {}
     };
 
     const { findByText } = render(<TenderChangeDisplay changeAmount={sampleAmounts} />);
-    await findByText(`$${sampleAmounts.total}`);
+    await findByText(`$${sampleAmounts.balance}`);
 });
 
 it('should show denominations', async () => {
     const sampleAmounts: TenderChangeAmount = {
-        total: 38.22,
+        balance: 38.22,
         denominations: {
-            hundreds: {
-                caption: '$100',
-                count: 1
-            },
             twenties: {
                 caption: '$20',
-                count: 2
+                count: 1
             },
             tens: {
                 caption: '$10',
-                count: 3
+                count: 1
             },
             fives: {
                 caption: '$5',
-                count: 4
+                count: 1
             },
+            ones: {
+                caption: '$1',
+                count: 3
+            },
+            dimes: {
+                caption: '10c',
+                count: 2
+            },
+            pennies: {
+                caption: '1c',
+                count: 2
+            }
         }
     }
 
     const { findByText } = render(<TenderChangeDisplay changeAmount={sampleAmounts} />);
 
-    await findByText(`$${sampleAmounts.total.toString()}`);
+    await findByText(`$${sampleAmounts.balance.toString()}`);
 
     Object.keys(sampleAmounts.denominations).map(key => sampleAmounts.denominations[key]).map(async denomination => {
         await findByText(denomination.caption);
         await findByText(denomination.count.toString());
     })
+});
+
+it('should gracefully handle empty tender change objects', async () => {
+    render(<TenderChangeDisplay />);
 });

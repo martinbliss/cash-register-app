@@ -3,6 +3,9 @@ import _ from 'lodash';
 import { Item } from './inventoryBar.component';
 import styled from 'styled-components';
 import { CurrencyInput } from './currencyInput.component';
+import Decimal from 'decimal.js';
+
+Decimal.set({ precision: 5, rounding: 2 });
 
 interface Props {
     items: Item[];
@@ -46,7 +49,7 @@ export const CartComponent = ({ items, taxRate = 0 }: Props) => {
 
     const subTotal = useMemo(() => _.sum(items.map(i => i.price)), [items]);
 
-    const tax = subTotal * taxRate;
+    const tax = new Decimal(subTotal).times(taxRate).toNumber();
     const total = subTotal + tax;
 
     return <Container>

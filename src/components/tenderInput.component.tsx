@@ -29,7 +29,6 @@ export const TenderInputComponent = ({ onTender }: Props) => {
 
     const handleClick = () => {
         onTender(amount);
-        setAmount(0);
     }
 
     return (
