@@ -5,16 +5,16 @@ import React from "react";
 describe('CurrencyInput', () => {
 
     it('should render successfully', async () => {
-        render(<CurrencyInput value={23.99} onChange={jest.fn()} />);
+        render(<CurrencyInput value={23.99} ariaLabel="test" onChange={jest.fn()} />);
     });
 
     it('should have an input when enabled', async () => {
-        const { baseElement } = render(<CurrencyInput value={23.99} onChange={jest.fn()} />);
+        const { baseElement } = render(<CurrencyInput ariaLabel="test" value={23.99} onChange={jest.fn()} />);
         expect(baseElement.querySelector('input')).toBeTruthy();
     });
 
     it('should have have a currency format', async () => {
-        const { baseElement, debug } = render(<CurrencyInput value={23.99} onChange={jest.fn()} />);
+        const { baseElement, debug } = render(<CurrencyInput value={23.99} ariaLabel="test" onChange={jest.fn()} />);
         const input = baseElement.querySelector('input');
 
         if (input) {
@@ -31,5 +31,8 @@ describe('CurrencyInput', () => {
     it('should display a currency value when disabled', async () => {
         const { findByText } = render(<CurrencyInput value={23.99} onChange={jest.fn()} disabled={true} />);
         findByText('$23.99');
+    });
+    it('should not throw if aria label is missing when component is disabled', async () => {
+        render(<CurrencyInput value={23.22} disabled />);
     });
 });

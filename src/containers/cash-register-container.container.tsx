@@ -1,14 +1,11 @@
 import React, { useState } from 'react';
-import { KeyPad, CurrencyInput } from '../components';
+import { KeyPad, CurrencyInput, TenderInput } from '../components';
 import styled from 'styled-components';
 import { InventoryBar, Item } from '../components/inventoryBar.component';
 import _ from 'lodash';
 import { Cart } from '../components/cart.component';
 import TaxConfig from '../config/tax.json';
-
-// const KeyPadContainer = styled.div`
-
-// `;
+import { TenderChangeAmount, TenderChangeDisplay } from '../components/tenderChangeDisplay.component';
 
 const Container = styled.div`
     display: flex;
@@ -30,6 +27,9 @@ const TotalContainer = styled.div`
     }
 `;
 
+const TenderContainer = styled.div`
+    margin-top: 124px;
+`;
 
 const Panel = styled.div`
     display: inline-block;
@@ -40,24 +40,51 @@ const Panel = styled.div`
 export const CashRegisterContainerComponent = () => {
     const [items, setItems] = useState<Item[]>([]);
 
-    // const [total, setTotal] = useState(0);
-    // const handleKeyPadClick = (number: number) => { console.info('number clicked', number) };
     const handleItemSelection = (item: Item) => setItems([...items, item]);
+    const handleTender = (amount: number) => { console.info('tender recd', amount); };
 
     const total = _.sum(items.map(i => i.price));
+
+    const tenderChangeSample: TenderChangeAmount = {
+        total: 200.00,
+        denominations: {
+            hundreds: {
+                caption: '$100',
+                count: 2
+            },
+            tens: {
+                caption: '$10',
+                count: 1
+            },
+            fives: {
+                caption: '$5',
+                count: 1
+            },
+            ones: {
+                caption: '$1',
+                count: 1
+            }
+        }
+    };
 
     return <Container>
         <MainPanel>
             <TotalContainer>
                 <span>Total: </span>
-                <CurrencyInput value={total} disabled />
+                <CurrencyInput ariaLabel="total" value={total} disabled />
             </TotalContainer>
             <div>
                 <InventoryBar onItemSelected={handleItemSelection} />
             </div>
-            {/* <KeyPadContainer>
-            <KeyPad onPress={handleKeyPadClick} />
-        </KeyPadContainer> */}
+            <TenderContainer>
+                <div>
+                    <TenderInput onTender={handleTender} />
+                </div>
+                <TenderContainer>
+                    <TenderChangeDisplay changeAmount={tenderChangeSample} />
+                </TenderContainer>
+            </TenderContainer>
+
         </MainPanel>
         <Panel>
             <Cart items={items} taxRate={TaxConfig.taxRate} />

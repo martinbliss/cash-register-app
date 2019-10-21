@@ -1,0 +1,38 @@
+{
+    "hundreds": {
+        "caption": "$100",
+        "value": 100
+    },
+    "fifties": {
+        "caption": "$50",
+        "value": 50
+    },
+    "tens": {
+        "caption": "$10",
+        "value": 10
+    },
+    "fives": {
+        "caption": "$5",
+        "value": 5
+    },
+    "ones": {
+        "caption": "$1",
+        "value": 1
+    },
+    "quarters": {
+        "caption": "25c",
+        "value": 0.25
+    },
+    "dimes": {
+        "caption": "10c",
+        "value": 0.1
+    },
+    "nickels": {
+        "caption": "5c",
+        "value": 0.05
+    },
+    "pennies": {
+        "caption": "1c",
+        "value": 0.01
+    }
+}
