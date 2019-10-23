@@ -1,5 +1,5 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, findByTestId } from '@testing-library/react';
 import { TenderChangeDisplay, TenderChangeAmount } from './tenderChangeDisplay.component';
 
 it('should show a change amount', async () => {
@@ -43,14 +43,20 @@ it('should show denominations', async () => {
         }
     }
 
-    const { findByText } = render(<TenderChangeDisplay changeAmount={sampleAmounts} />);
+    const { findByText, findByTestId } = render(<TenderChangeDisplay changeAmount={sampleAmounts} />);
 
     await findByText(`$${sampleAmounts.balance.toString()}`);
 
-    Object.keys(sampleAmounts.denominations).map(key => sampleAmounts.denominations[key]).map(async denomination => {
-        await findByText(denomination.caption);
-        await findByText(denomination.count.toString());
-    })
+    const samples = Object.keys(sampleAmounts.denominations).map(key => ({ key, ...sampleAmounts.denominations[key] }));
+
+    await samples.reduce((sum, denomination) => {
+        return sum.then(async () => {
+            await findByText(denomination.caption);
+            const value = await findByTestId(denomination.key);
+            expect(value.textContent).toEqual(denomination.count.toString());
+        })
+    }, Promise.resolve());
+
 });
 
 it('should gracefully handle empty tender change objects', async () => {

@@ -32,7 +32,7 @@ export const makeChange = (total: number, tender: number): TransactionResult => 
         total,
         tender,
         balance,
-        denominations: balance > 0 && getDenominations(balance) || {}
+        denominations: (balance > 0 && getDenominations(balance)) || {}
     };
 }
 

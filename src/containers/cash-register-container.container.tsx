@@ -58,8 +58,8 @@ export const CashRegisterContainerComponent = () => {
     return <Container>
         <MainPanel>
             <TotalContainer>
-                <span>Sub-Total: </span>
-                <CurrencyInput ariaLabel="total" value={subTotal} disabled />
+                <span>Total: </span>
+                <CurrencyInput value={total} disabled />
             </TotalContainer>
             <div>
                 <InventoryBar onItemSelected={handleItemSelection} />

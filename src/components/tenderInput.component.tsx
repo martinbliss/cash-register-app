@@ -21,25 +21,31 @@ const TenderLabel = styled.span`
 `;
 
 const Button = styled.button`
-    font-size: 18px;    
+    font-size: 32px;    
+    margin-top: 32px;
+    padding: 8px 18px;
 `;
 
 export const TenderInputComponent = ({ onTender }: Props) => {
     const [amount, setAmount] = useState(0);
 
-    const handleClick = () => {
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
         onTender(amount);
     }
 
     return (
         <Container>
-            <TenderLabel>
-                Tender Amount:
+            <form onSubmit={handleSubmit}>
+                <TenderLabel>
+                    Tender Amount:
                 <CurrencyInput ariaLabel="Tender Amount" value={amount} onChange={setAmount} />
-            </TenderLabel>
-            <div>
-                <Button onClick={handleClick}>Tender</Button>
-            </div>
+                </TenderLabel>
+                <div>
+                    <Button type="submit">Tender</Button>
+                </div>
+            </form>
+
         </Container>
     )
 }

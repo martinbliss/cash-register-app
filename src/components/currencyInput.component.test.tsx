@@ -13,7 +13,7 @@ describe('CurrencyInput', () => {
         expect(baseElement.querySelector('input')).toBeTruthy();
     });
 
-    it('should have have a currency format', async () => {
+    it('should have a currency format', async () => {
         const { baseElement, debug } = render(<CurrencyInput value={23.99} ariaLabel="test" onChange={jest.fn()} />);
         const input = baseElement.querySelector('input');
 

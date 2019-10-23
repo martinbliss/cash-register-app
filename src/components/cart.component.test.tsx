@@ -19,10 +19,13 @@ describe('Cart', () => {
 
         const { findByText } = render(<CartComponent items={sampleItems} />);
 
-        await sampleItems.forEach(async item => {
-            await findByText(item.description);
-            await findByText(`$${item.price.toString()}`);
-        });
+        await sampleItems.reduce((sum, item) => {
+            return sum.then(async () => {
+                await findByText(item.description);
+                await findByText(`$${item.price.toString()}`);
+            });
+        }, Promise.resolve());
+
     });
 
     it('should show correct tax', async () => {

@@ -52,6 +52,15 @@ const testCases: TestCase[] = [
             tens: 1,
             ones: 1
         }
+    },
+    {
+        total: 15,
+        tender: 20.2,
+        balance: 5.2,
+        denominations: {
+            fives: 1,
+            dimes: 2
+        }
     }
 ];
 

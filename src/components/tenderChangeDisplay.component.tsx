@@ -48,24 +48,22 @@ const emptyChangeAmountValue: TenderChangeAmount = { balance: 0, denominations: 
 export const TenderChangeDisplay = ({ changeAmount = emptyChangeAmountValue }: Props) => {
     const { balance = 0, denominations = {} } = changeAmount;
 
-    const amountElements = Object.keys(denominations).map(key => denominations[key])
+    const amountElements = Object.keys(denominations).map(key => ({ key, ...denominations[key] }))
         .map((denomination, index) => <DenominationRow key={index}>
-            {/* <Image src={require(`../images/${denomination.image}`)} /> */}
             <div>
                 <label>{denomination.caption}</label>
             </div>
-            <DenominationContent>
+            <DenominationContent data-testid={denomination.key}>
                 {denomination.count}
             </DenominationContent>
         </DenominationRow>);
 
     return <Container>
         <div>
-            Change Amount: <CurrencyInput disabled value={balance} />
+            Change Amount: <CurrencyInput disabled value={balance} data-testid="change-due" />
         </div>
         <div>
-            Denominations:
-                    <DenominationContainer>
+            <DenominationContainer>
                 {amountElements}
             </DenominationContainer>
         </div>
