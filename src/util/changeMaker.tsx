@@ -59,3 +59,29 @@ const getDenominations = (balance: number): Denominations => {
 
     return result;
 }
+
+// const getDenominations = (balance: number): Denominations => {
+//     let tens = (balance - balance % 10) / 10
+//     let tensChange = balance % 10
+//     let fives = (tensChange - tensChange % 5) / 5
+//     let fivesChange = tensChange % 5
+//     let ones = (fivesChange - fivesChange % 1) / 1
+//     let onesChange = fivesChange % 1
+//     let quarters = (onesChange - onesChange % .25) / .25
+//     let quartersChange = onesChange % .25
+//     let dimes = (quartersChange - quartersChange % .1) / .1
+//     let dimesChange = quartersChange % .1
+//     let nickels = (dimesChange - dimesChange % .05) / .05
+//     let nickelsChange = dimesChange % .05
+//     let pennies = (nickelsChange - nickelsChange % .01) / .01
+//     return {
+//         ['tens']: { caption: 'tens', count: tens },
+//         ['fives']: { caption: 'fives', count: fives },
+//         ['ones']: { caption: 'ones', count: ones },
+//         ['quarters']: { caption: 'quarters', count: quarters },
+//         ['dimes']: { caption: 'dimes', count: dimes },
+//         ['nickels']: { caption: 'nickels', count: nickels },
+//         ['pennies']: { caption: 'pennies', count: pennies }
+//     }
+
+// }

@@ -77,4 +77,11 @@ testCases.forEach(testCase => {
             expect(actualCount).toEqual(denomination.count);
         });
     });
+
+    it('should only contain required denominations', () => {
+        const result = makeChange(testCase.total, testCase.tender);
+        Object.keys(result.denominations).map(key => ({ key, ...result.denominations[key] })).forEach(denomination => {
+            expect(denomination.count).toBeGreaterThanOrEqual(1);
+        });
+    });
 });
