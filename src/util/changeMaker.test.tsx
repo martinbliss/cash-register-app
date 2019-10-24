@@ -72,8 +72,9 @@ testCases.forEach(testCase => {
         expect(result.tender).toEqual(testCase.tender);
         expect(result.balance).toEqual(testCase.balance);
 
-        Object.keys(result.denominations).map(key => ({ key, ...result.denominations[key] })).forEach(denomination => {
-            expect(denomination.count).toEqual(testCase.denominations[denomination.key]);
+        Object.keys(testCase.denominations).map(key => ({ key, count: testCase.denominations[key] })).forEach(denomination => {
+            const actualCount = result.denominations[denomination.key] && result.denominations[denomination.key].count;
+            expect(actualCount).toEqual(denomination.count);
         });
     });
 });
