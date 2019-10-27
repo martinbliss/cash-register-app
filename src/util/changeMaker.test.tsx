@@ -64,6 +64,7 @@ const testCases: TestCase[] = [
     }
 ];
 
+
 testCases.forEach(testCase => {
     it(`should handle making change for $${testCase.total}`, async () => {
         const result = makeChange(testCase.total, testCase.tender);
@@ -72,8 +73,25 @@ testCases.forEach(testCase => {
         expect(result.tender).toEqual(testCase.tender);
         expect(result.balance).toEqual(testCase.balance);
 
+        Object.keys(testCase.denominations).map(key => ({ key, count: testCase.denominations[key] })).forEach(denomination => {
+            const actualCount = result.denominations[denomination.key] && result.denominations[denomination.key].count;
+            expect(actualCount).toEqual(denomination.count);
+        });
+    });
+
+
+    it('should only have denominations with integers', async () => {
+        const result = makeChange(testCase.total, testCase.tender);
+
         Object.keys(result.denominations).map(key => ({ key, ...result.denominations[key] })).forEach(denomination => {
-            expect(denomination.count).toEqual(testCase.denominations[denomination.key]);
+            parseInt(denomination.count.toString());
+        });
+    });
+
+    it('should only contain required denominations', () => {
+        const result = makeChange(testCase.total, testCase.tender);
+        Object.keys(result.denominations).map(key => ({ key, ...result.denominations[key] })).forEach(denomination => {
+            expect(denomination.count).toBeGreaterThanOrEqual(1);
         });
     });
 });
