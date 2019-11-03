@@ -69,7 +69,7 @@ interface TestCase {
 //     }
 // ];
 
-const testCases = _.range(0, 10000).map(_ => {
+const testCases = _.range(0, 50).map(_ => {
     const total = new Decimal(new Decimal(Math.random() * 1000).toPrecision(2)).toNumber();
     const tender = new Decimal(new Decimal(total).add(Math.random() * 10).toPrecision(2)).toNumber();
     const balance = new Decimal(new Decimal(tender).minus(total).toPrecision(2)).toNumber();
