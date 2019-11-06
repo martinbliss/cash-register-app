@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@types/jest": "24.0.19",
-    "@types/node": "12.11.1",
+    "@types/node": "^12.12.5",
     "@types/react": "16.9.9",
     "@types/react-dom": "16.9.2",
     "decimal.js": "^10.2.0",
@@ -12,6 +12,7 @@
     "react": "^16.10.2",
     "react-dom": "^16.10.2",
     "react-number-format": "^4.3.0",
+    "react-router-dom": "^5.1.2",
     "react-scripts": "3.2.0",
     "styled-components": "^4.4.0",
     "typescript": "3.6.4"
@@ -40,6 +41,7 @@
   "devDependencies": {
     "@testing-library/react": "^9.3.0",
     "@types/lodash": "^4.14.144",
+    "@types/react-router-dom": "^5.1.2",
     "@types/styled-components": "^4.1.19"
   }
 }

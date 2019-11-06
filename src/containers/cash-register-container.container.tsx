@@ -1,83 +1,87 @@
 import React, { useState, useMemo } from 'react';
 import { KeyPad, CurrencyInput, TenderInput } from '../components';
 import styled from 'styled-components';
-import { InventoryBar, Item } from '../components/inventoryBar.component';
+import { InventoryBar } from '../components/inventoryBar.component';
 import _ from 'lodash';
 import { Cart } from '../components/cart.component';
 import TaxConfig from '../config/tax.json';
 import { TenderChangeAmount, TenderChangeDisplay } from '../components/tenderChangeDisplay.component';
 import { makeChange } from '../util/changeMaker';
 import Decimal from 'decimal.js';
+import { InventoryItem } from '../util';
+import { TenderModal } from '../components/tenderModal.component';
+import { Route, RouteComponentProps, Link, useLocation, useHistory } from 'react-router-dom';
 
 Decimal.set({ precision: 5, rounding: 2 });
 
 const Container = styled.div`
     display: flex;
-    flex-direction: row;
-    align-items: flex-start;    
-    // min-height: 2800px;
+    flex-direction: column;
 `;
 
-const MainPanel = styled.div`
-    flex-grow: 1;
-    display: inline-block;
-`;
+const Row = styled.div`
+    margin: 32px auto;
 
-const TotalContainer = styled.div`
-    margin: 24px 0;
-    font-size: 64px;    
-    input {
-        font-size: 64px;
+    span {
+        font-size: 32px;
     }
 `;
 
-const TenderContainer = styled.div`
-    margin-top: 124px;
+const Button = styled.button`
+    font-size: 32px;
+    padding: 16px 48px;
+    cursor: pointer;
 `;
 
-const Panel = styled.div`
-    display: inline-block;
-    min-width: 1000px;
-    margin-left: 64px;
-`;
 
-export const CashRegisterContainerComponent = () => {
-    const [items, setItems] = useState<Item[]>([]);
+interface Props extends RouteComponentProps<any> {
+
+}
+
+export const CashRegisterContainerComponent = ({ }: Props) => {
+    const history = useHistory();
+
+    const [items, setItems] = useState<InventoryItem[]>([]);
     const [tender, setTender] = useState(0);
     const [changeAmount, setChangeAmount] = useState({} as TenderChangeAmount);
 
     const subTotal = useMemo(() => _.sum(items.map(i => i.price)), [items]);
     const total = new Decimal(subTotal).mul(1 + TaxConfig.taxRate).toNumber();
 
-    const handleItemSelection = (item: Item) => setItems([...items, item]);
-    const handleTender = (tender: number) => {
+    const handleItemSelection = (item: InventoryItem) => setItems([...items, item]);
+    const handleTenderAmount = (tender: number) => {
         setTender(tender);
-        setChangeAmount(makeChange(total, tender))
+        setChangeAmount(makeChange(total, tender));
+        history.goBack();
     };
 
+    const handleTenderClick = () => {
+        console.info('tender click');
+        history.push('/tender');
+    }
+    const handleTenderCancel = () => {
+        console.info('click cancel');
+        history.goBack();
+    };
+
+
     return <Container>
-        <MainPanel>
-            <TotalContainer>
-                <span>Total: </span>
-                <CurrencyInput value={total} disabled />
-            </TotalContainer>
-            <div>
-                <InventoryBar onItemSelected={handleItemSelection} />
-            </div>
-            <TenderContainer>
-                <div>
-                    <TenderInput onTender={handleTender} />
-                </div>
-                <TenderContainer>
-                    <TenderChangeDisplay changeAmount={changeAmount} />
-                </TenderContainer>
-            </TenderContainer>
-
-        </MainPanel>
-        <Panel>
+        <Row>
+            <span>Total:</span>
+            <CurrencyInput value={total} disabled />
+        </Row>
+        <Row>
+            <InventoryBar onItemSelected={handleItemSelection} />
+        </Row>
+        <Row>
+            <Button disabled={!total} onClick={handleTenderClick}>
+                Tender
+            </Button>
+        </Row>
+        <Row>
             <Cart items={items} taxRate={TaxConfig.taxRate} />
-        </Panel>
-
+        </Row>
+        <Route path="/tender" component={() => <TenderModal total={total} onConfirm={handleTenderAmount} onCancel={handleTenderCancel} />} />
     </Container>;
 }
 

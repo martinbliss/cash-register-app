@@ -1,19 +1,18 @@
 import React from 'react';
-import InventoryConfig from '../config/inventory.json';
 import styled from 'styled-components';
+import path from 'path';
+import { Inventory, InventoryItem } from '../util';
 
-const resolveImagePath = (imageName: string) => require(`../images/${imageName}`);
-
-export type InventoryMap = { [key: string]: Item };
-
-export interface Item {
-    description: string;
-    price: number;
-    image: string;
+const resolveImagePath = (imageName: string) => {
+    if (imageName.startsWith('http')) {
+        return imageName;
+    } else {
+        return require(`../images/${imageName}`);
+    }
 }
 
 interface Props {
-    onItemSelected: (item: Item) => void;
+    onItemSelected: (item: InventoryItem) => void;
 }
 
 const Button = styled.button`
@@ -30,8 +29,8 @@ const Image = styled.img`
 
 export const InventoryBarComponent = ({ onItemSelected }: Props) => {
 
-    const items = Object.keys(InventoryConfig)
-        .map(key => (InventoryConfig as InventoryMap)[key])
+    const items = Object.keys(Inventory)
+        .map(key => Inventory[key])
         .map((item, index) => <Button key={index} onClick={() => onItemSelected(item)}><Image alt={item.description} src={resolveImagePath(item.image)} /></Button>);
 
     return <Container>{items}</Container>;

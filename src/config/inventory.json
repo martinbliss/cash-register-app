@@ -28,5 +28,15 @@
         "description": "1 Whole Pepperoni Pizza",
         "price": 35.99,
         "image": "pizza.jpeg"
+    },
+    "folders": {
+        "description": "Some random files in folders",
+        "price": 1.55,
+        "image": "https://thecontentwrangler.com/wp-content/uploads/Inventory.jpg"
+    },
+    "gdlMural": {
+        "description": "A priceless mural found in a church",
+        "price": 99999993.39,
+        "image": "https://thewholeworldornothing.com/wp-content/uploads/2017/12/painting.jpg"
     }
 }

@@ -1,24 +1,24 @@
 import React, { useMemo } from 'react';
 import _ from 'lodash';
-import { Item } from './inventoryBar.component';
 import styled from 'styled-components';
 import { CurrencyInput } from './currencyInput.component';
 import Decimal from 'decimal.js';
+import { InventoryItem } from '../util';
 
 Decimal.set({ precision: 5, rounding: 2 });
 
 interface Props {
-    items: Item[];
+    items: InventoryItem[];
     taxRate?: number;
 }
 
 
 const Container = styled.div`
     font-size: 32px;
-    background-color: white;
-    border: 1px solid black;
+    background-color: #ecf0f1;
+    border: 1px solid #2c3e50;
     flex: 1;
-    color: black;
+    color: #2c3e50;
     display: flex;
     flex-direction: column;
     padding: 8px 32px;
@@ -34,11 +34,13 @@ const DescriptionPart = styled.div`
     flex-grow: 1;
     text-align: left;
     display: inline-block;
+    margin-right: 12px;
 `;
 
 const PricePart = styled.div`
     text-align: right;
     display: inline-block;
+    margin-left: 12px;
 `;
 
 export const CartComponent = ({ items, taxRate = 0 }: Props) => {
