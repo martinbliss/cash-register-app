@@ -56,11 +56,9 @@ export const CashRegisterContainerComponent = ({ }: Props) => {
     };
 
     const handleTenderClick = () => {
-        console.info('tender click');
         history.push('/tender');
     }
     const handleTenderCancel = () => {
-        console.info('click cancel');
         history.goBack();
     };
 
