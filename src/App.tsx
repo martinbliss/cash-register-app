@@ -8,7 +8,7 @@ import styled from 'styled-components';
 
 const AppContainer = styled.div`
   display: flex;
-  flex-direction: columns;
+  flex-direction: column;
 `;
 
 const Section = styled.div`
@@ -22,7 +22,7 @@ const GrowthSection = styled.div`
 
 const Tabs = styled.div`
   display: flex;  
-  flex-direction: column;
+  // flex-direction: column;
 
   a {
 

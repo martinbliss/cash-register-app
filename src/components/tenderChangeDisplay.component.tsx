@@ -43,6 +43,10 @@ const DenominationContent = styled.div`
     border-bottom: 1px dashed white;
 `;
 
+const Label = styled.label`
+    color: white;
+`;
+
 const emptyChangeAmountValue: TenderChangeAmount = { balance: 0, denominations: {} };
 
 export const TenderChangeDisplay = ({ changeAmount = emptyChangeAmountValue }: Props) => {
@@ -51,17 +55,17 @@ export const TenderChangeDisplay = ({ changeAmount = emptyChangeAmountValue }: P
     const amountElements = Object.keys(denominations).map(key => ({ key, ...denominations[key] }))
         .map((denomination, index) => <DenominationRow key={index}>
             <div>
-                <label>{denomination.caption}</label>
+                <Label>{denomination.caption}</Label>
             </div>
             <DenominationContent data-testid={denomination.key}>
-                {denomination.count}
+                <Label>{denomination.count}</Label>
             </DenominationContent>
         </DenominationRow>);
 
     return <Container>
-        <div>
+        <Label>
             Change Amount: <CurrencyInput disabled value={balance} data-testid="change-due" />
-        </div>
+        </Label>
         <div>
             <DenominationContainer>
                 {amountElements}

@@ -33,6 +33,24 @@ const Button = styled.button`
     cursor: pointer;
 `;
 
+const Label = styled.label`
+    font-size: 32px;
+    color: white;
+
+    span {
+        color: white;
+    }
+`;
+
+const SemiContainer = styled.div`
+    display: flex;
+    flex-grow: 1
+
+    > * {
+        margin: 0 16px;
+    }
+`;
+
 
 interface Props extends RouteComponentProps<any> {
 
@@ -65,8 +83,10 @@ export const CashRegisterContainerComponent = ({ }: Props) => {
 
     return <Container>
         <Row>
-            <span>Total:</span>
+            <Label>
+                Total:
             <CurrencyInput value={total} disabled />
+            </Label>
         </Row>
         <Row>
             <InventoryBar onItemSelected={handleItemSelection} />
@@ -76,9 +96,10 @@ export const CashRegisterContainerComponent = ({ }: Props) => {
                 Tender
             </Button>
         </Row>
-        <Row>
+        <SemiContainer>
             <Cart items={items} taxRate={TaxConfig.taxRate} />
-        </Row>
+            {changeAmount.balance && <TenderChangeDisplay changeAmount={changeAmount} />}
+        </SemiContainer>
         <Route path="/tender" component={() => <TenderModal total={total} onConfirm={handleTenderAmount} onCancel={handleTenderCancel} />} />
     </Container>;
 }

@@ -15,11 +15,12 @@ const Container = styled.div`
     position: fixed;
     top: 50%;
     left: 50%;
-    background-color: #d35400;
+    background-color: #282c34;
     color: #ecf0f1;
     padding: 64px 32px;
     font-size: 32px;
     transform: translate(-50%,-50%);
+    border: 2px solid black;
 
     input {
         margin-left: 12px;
@@ -33,12 +34,13 @@ const Row = styled.div`
 
 const RowColumn = styled.div`
     display: flex;
-    flex-direction: column;
+    // flex-direction: column;
 `;
 
 const Button = styled.button`
     font-size: 32px;
-    margin: 32px 0 0 0;
+    margin: 16px;
+    padding: 8px 16px;
     cursor: pointer;
 `;
 
@@ -47,7 +49,8 @@ export const TenderModal = ({ total = 0, onConfirm, onCancel }: Props) => {
 
     return <Container>
         <Row>
-            Total: ${total}
+            Total:
+            <CurrencyInput disabled value={total} ariaLabel="tender-total" />
         </Row>
         <Row>
             Tender Amount:

@@ -12,8 +12,11 @@ interface Props {
     taxRate?: number;
 }
 
-
 const Container = styled.div`
+    flex-grow: 1;
+`;
+
+const InnerContainer = styled.div`
     font-size: 32px;
     background-color: #ecf0f1;
     border: 1px solid #2c3e50;
@@ -43,6 +46,11 @@ const PricePart = styled.div`
     margin-left: 12px;
 `;
 
+const CartLabel = styled.label`
+    font-size: 32px;
+    color: white;
+`;
+
 export const CartComponent = ({ items, taxRate = 0 }: Props) => {
     const rows = useMemo(() => items.map((item, index) => <ItemRow key={index}>
         <DescriptionPart>{item.description}</DescriptionPart>
@@ -55,19 +63,22 @@ export const CartComponent = ({ items, taxRate = 0 }: Props) => {
     const total = subTotal + tax;
 
     return <Container>
-        {rows}
-        <ItemRow>
-            <DescriptionPart>Sub-Total</DescriptionPart>
-            <PricePart><CurrencyInput value={subTotal} disabled /></PricePart>
-        </ItemRow>
-        <ItemRow>
-            <DescriptionPart>Tax ({taxRate * 100}%)</DescriptionPart>
-            <PricePart><CurrencyInput value={tax} disabled /></PricePart>
-        </ItemRow>
-        <ItemRow>
-            <DescriptionPart><b>Total</b></DescriptionPart>
-            <PricePart><b><CurrencyInput value={total} disabled /></b></PricePart>
-        </ItemRow>
+        <CartLabel>Checkout Cart</CartLabel>
+        <InnerContainer>
+            {rows}
+            <ItemRow>
+                <DescriptionPart>Sub-Total</DescriptionPart>
+                <PricePart><CurrencyInput value={subTotal} disabled /></PricePart>
+            </ItemRow>
+            <ItemRow>
+                <DescriptionPart>Tax ({taxRate * 100}%)</DescriptionPart>
+                <PricePart><CurrencyInput value={tax} disabled /></PricePart>
+            </ItemRow>
+            <ItemRow>
+                <DescriptionPart><b>Total</b></DescriptionPart>
+                <PricePart><b><CurrencyInput value={total} disabled /></b></PricePart>
+            </ItemRow>
+        </InnerContainer>
     </Container>;
 }
 

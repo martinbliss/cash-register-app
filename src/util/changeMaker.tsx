@@ -26,7 +26,7 @@ export interface TransactionResult {
 }
 
 export const makeChange = (total: number, tender: number): TransactionResult => {
-    const balance = new Decimal(new Decimal(tender).minus(total).toPrecision(2)).toNumber();
+    const balance = new Decimal(new Decimal(tender).minus(total)).toNumber();
 
     return {
         total,
