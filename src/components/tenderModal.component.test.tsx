@@ -61,5 +61,5 @@ it('should not allow insufficient tender', async () => {
 
 it('should display given total', async () => {
     const { findByText } = render(<TenderModal total={9.22} onCancel={jest.fn()} onConfirm={jest.fn()} />);
-    await findByText('Total: $9.22');
+    await findByText('$9.22');
 });

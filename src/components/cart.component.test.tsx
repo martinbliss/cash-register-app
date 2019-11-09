@@ -7,7 +7,7 @@ import _ from 'lodash';
 describe('Cart', () => {
 
     it('should render successfully', async () => {
-        render(<CartComponent items={[]} />);
+        render(<CartComponent items={[]} taxRate={0} tax={0} subTotal={0} total={0} />);
     });
 
     it('should show each item provided', async () => {
@@ -17,7 +17,7 @@ describe('Cart', () => {
             { price: 30.23, description: 'Fix This', image: '' },
         ];
 
-        const { findByText } = render(<CartComponent items={sampleItems} />);
+        const { findByText } = render(<CartComponent items={sampleItems} taxRate={0} tax={0} subTotal={0} total={0} />);
 
         await sampleItems.reduce((sum, item) => {
             return sum.then(async () => {
@@ -28,55 +28,45 @@ describe('Cart', () => {
 
     });
 
-    it('should show correct tax', async () => {
+    it('should show tax', async () => {
         const sampleItems: Item[] = [
             { price: 2.25, description: 'Test XYZ', image: '' },
             { price: 1.75, description: 'Keep That', image: '' },
             { price: 30.23, description: 'Fix This', image: '' },
         ];
 
-        const taxRate = 0.0825;
-        const { findByText } = render(<CartComponent items={sampleItems} taxRate={taxRate} />);
+        const taxAmount = '20.33';
+        const { findByText } = render(<CartComponent items={sampleItems} taxRate={'8.25'} tax={taxAmount} subTotal={0} total={0} />);
 
-        const sampleTotal = _.sum(sampleItems.map(i => i.price));
-        const expectedTaxAmount = sampleTotal * taxRate;
-        const expectedTaxAmountString = (new Intl.NumberFormat(undefined, { style: 'currency', currency: 'USD' })).format(expectedTaxAmount);
 
         await findByText('Tax (8.25%)');
-        await findByText(`${expectedTaxAmountString}`);
+        await findByText(`$${taxAmount}`);
     });
 
-    it('should show correct sub-total', async () => {
+    it('should show sub-total', async () => {
         const sampleItems: Item[] = [
             { price: 2.25, description: 'Test XYZ', image: '' },
             { price: 1.75, description: 'Keep That', image: '' },
             { price: 30.23, description: 'Fix This', image: '' },
         ];
 
-        const taxRate = 0.0825;
-        const { findByText } = render(<CartComponent items={sampleItems} taxRate={taxRate} />);
-
-        const subTotal = _.sum(sampleItems.map(i => i.price));
-        const expectedSubTotalString = (new Intl.NumberFormat(undefined, { style: 'currency', currency: 'USD' })).format(subTotal);
+        const subTotal = '20.33';
+        const { findByText } = render(<CartComponent items={sampleItems} taxRate={0} tax={0} subTotal={subTotal} total={0} />);
 
         await findByText('Sub-Total');
-        await findByText(`${expectedSubTotalString}`);
+        await findByText(`$${subTotal}`);
     });
-    it('should show correct total', async () => {
+    it('should show total', async () => {
         const sampleItems: Item[] = [
             { price: 2.25, description: 'Test XYZ', image: '' },
             { price: 1.75, description: 'Keep That', image: '' },
             { price: 30.23, description: 'Fix This', image: '' },
         ];
 
-        const taxRate = 0.0825;
-        const { findByText } = render(<CartComponent items={sampleItems} taxRate={taxRate} />);
-
-        const subTotal = _.sum(sampleItems.map(i => i.price));
-        const sampleTotal = subTotal * (1 + taxRate);
-        const expectedTotalString = (new Intl.NumberFormat(undefined, { style: 'currency', currency: 'USD' })).format(sampleTotal);
+        const total = '99.33';
+        const { findByText } = render(<CartComponent items={sampleItems} taxRate={0} tax={0} subTotal={0} total={total} />);
 
         await findByText('Total');
-        await findByText(`${expectedTotalString}`);
+        await findByText(`$${total}`);
     });
 });

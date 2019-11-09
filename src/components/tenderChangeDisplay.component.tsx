@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { CurrencyInput } from './currencyInput.component';
+import NumberFormat from 'react-number-format';
 
 export interface TenderChangeAmount {
     balance: number;
@@ -58,7 +59,7 @@ export const TenderChangeDisplay = ({ changeAmount = emptyChangeAmountValue }: P
                 <Label>{denomination.caption}</Label>
             </div>
             <DenominationContent data-testid={denomination.key}>
-                <Label>{denomination.count}</Label>
+                <Label><NumberFormat thousandSeparator="," value={denomination.count} displayType="text" /></Label>
             </DenominationContent>
         </DenominationRow>);
 

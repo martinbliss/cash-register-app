@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { TenderInput } from './tenderInput.component';
 import { CurrencyInput } from './currencyInput.component';
+import Decimal from 'decimal.js';
 
 interface Props {
-    total: number;
+    total: Decimal.Value;
     onConfirm: (amount: number) => void;
     onCancel: () => void;
 }
@@ -44,21 +45,23 @@ const Button = styled.button`
     cursor: pointer;
 `;
 
-export const TenderModal = ({ total = 0, onConfirm, onCancel }: Props) => {
+export const TenderModal = ({ total = '0', onConfirm, onCancel }: Props) => {
     const [amount, setAmount] = useState(0);
 
     return <Container>
-        <Row>
-            Total:
+        <form>
+            <Row>
+                Total:
             <CurrencyInput disabled value={total} ariaLabel="tender-total" />
-        </Row>
-        <Row>
-            Tender Amount:
+            </Row>
+            <Row>
+                Tender Amount:
             <CurrencyInput value={amount} onChange={setAmount} ariaLabel="tender-amount" />
-        </Row>
-        <RowColumn>
-            <Button onClick={() => onConfirm(amount)} disabled={amount < total}>Confirm</Button>
-            <Button onClick={onCancel}>Cancel</Button>
-        </RowColumn>
+            </Row>
+            <RowColumn>
+                <Button type="submit" onClick={() => onConfirm(amount)} disabled={new Decimal(amount).lessThan(total)}>Confirm</Button>
+                <Button onClick={onCancel}>Cancel</Button>
+            </RowColumn>
+        </form>
     </Container>;
 }

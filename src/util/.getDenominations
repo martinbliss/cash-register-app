@@ -7,10 +7,11 @@ const getDenominations = (balance: number): Denominations => {
     let remainingBalance = new Decimal(balance);
     const result = rankedDenominations.reduce((sum, n) => {
         if (remainingBalance.gt(0)) {
-            const splitRemainder = remainingBalance.dividedToIntegerBy(n.value);
+            const splitRemainder = remainingBalance.dividedBy(n.value).floor();
 
             if (splitRemainder.gte(1)) {
-                remainingBalance = remainingBalance.minus(new Decimal(n.value).times(splitRemainder));
+                const realizedValue = (new Decimal(n.value).times(splitRemainder)).toFixed(2);
+                remainingBalance = remainingBalance.minus(realizedValue);
 
                 sum[n.key] = {
                     caption: n.caption,

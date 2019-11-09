@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import NumberFormat from 'react-number-format';
 import styled from 'styled-components';
+import Decimal from 'decimal.js';
 
 const format = new Intl.NumberFormat(undefined, { style: 'currency', currency: 'USD', minimumFractionDigits: 2 });
 
@@ -12,7 +13,7 @@ const Input = styled.span`
 `;
 
 interface Props {
-    value: number;
+    value: Decimal.Value;
     onChange?: (value: number) => void;
     disabled?: boolean;
     ariaLabel?: string;
@@ -37,5 +38,5 @@ export const CurrencyInput = ({ value = 0, onChange, ariaLabel = '', disabled = 
         throw 'aria-label prop is required but missing.';
     }
 
-    return <Input><NumberFormat onFocus={handleFocus} prefix="$" thousandSeparator="," fixedDecimalScale={true} decimalScale={2} value={value} onValueChange={values => onChange && onChange(values.floatValue)} getInputRef={setRef} displayType={displayType} {...props} /></Input>
+    return <Input><NumberFormat onFocus={handleFocus} prefix="$" thousandSeparator="," fixedDecimalScale={true} decimalScale={2} value={value.toString()} onValueChange={values => onChange && onChange(values.floatValue)} getInputRef={setRef} displayType={displayType} {...props} /></Input>
 }

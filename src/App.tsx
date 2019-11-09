@@ -55,7 +55,7 @@ const App = ({ }) => {
       <Section className="App-header">
         <Tabs>
           <Link to="/"><TabItem>Cash Register</TabItem></Link>
-          <Link to="/inventory"><TabItem>Inventory Management</TabItem></Link>
+          <Link to="/inventory"><TabItem>Inventory</TabItem></Link>
         </Tabs>
       </Section>
       <GrowthSection>

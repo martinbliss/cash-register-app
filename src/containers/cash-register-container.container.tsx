@@ -52,7 +52,7 @@ const SemiContainer = styled.div`
 `;
 
 
-interface Props extends RouteComponentProps<any> {
+interface Props {
 
 }
 
@@ -63,13 +63,15 @@ export const CashRegisterContainerComponent = ({ }: Props) => {
     const [tender, setTender] = useState(0);
     const [changeAmount, setChangeAmount] = useState({} as TenderChangeAmount);
 
-    const subTotal = useMemo(() => _.sum(items.map(i => i.price)), [items]);
-    const total = new Decimal(subTotal).mul(1 + TaxConfig.taxRate).toNumber();
+    const taxRatePercentage = new Decimal(TaxConfig.taxRate).mul(100).toFixed(2);
+    const subTotal = useMemo(() => _.sum(items.map(i => i.price)).toString(), [items]);
+    const tax = new Decimal(subTotal).mul(1 + TaxConfig.taxRate).toFixed(2);
+    const total = new Decimal(subTotal).plus(tax).toString();
 
     const handleItemSelection = (item: InventoryItem) => setItems([...items, item]);
     const handleTenderAmount = (tender: number) => {
         setTender(tender);
-        setChangeAmount(makeChange(total, tender));
+        setChangeAmount(makeChange(new Decimal(total).toNumber(), tender));
         history.goBack();
     };
 
@@ -97,7 +99,7 @@ export const CashRegisterContainerComponent = ({ }: Props) => {
             </Button>
         </Row>
         <SemiContainer>
-            <Cart items={items} taxRate={TaxConfig.taxRate} />
+            <Cart items={items} taxRate={taxRatePercentage} tax={tax} subTotal={subTotal} total={total} />
             {changeAmount.balance && <TenderChangeDisplay changeAmount={changeAmount} />}
         </SemiContainer>
         <Route path="/tender" component={() => <TenderModal total={total} onConfirm={handleTenderAmount} onCancel={handleTenderCancel} />} />

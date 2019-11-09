@@ -9,7 +9,10 @@ Decimal.set({ precision: 5, rounding: 2 });
 
 interface Props {
     items: InventoryItem[];
-    taxRate?: number;
+    taxRate?: Decimal.Value;
+    tax: Decimal.Value;
+    subTotal: Decimal.Value;
+    total: Decimal.Value;
 }
 
 const Container = styled.div`
@@ -51,16 +54,11 @@ const CartLabel = styled.label`
     color: white;
 `;
 
-export const CartComponent = ({ items, taxRate = 0 }: Props) => {
+export const CartComponent = ({ items, taxRate = '0', subTotal, tax, total }: Props) => {
     const rows = useMemo(() => items.map((item, index) => <ItemRow key={index}>
         <DescriptionPart>{item.description}</DescriptionPart>
         <PricePart><CurrencyInput value={item.price} disabled /></PricePart>
     </ItemRow>), [items]);
-
-    const subTotal = useMemo(() => _.sum(items.map(i => i.price)), [items]);
-
-    const tax = new Decimal(subTotal).times(taxRate).toNumber();
-    const total = subTotal + tax;
 
     return <Container>
         <CartLabel>Checkout Cart</CartLabel>
@@ -71,7 +69,7 @@ export const CartComponent = ({ items, taxRate = 0 }: Props) => {
                 <PricePart><CurrencyInput value={subTotal} disabled /></PricePart>
             </ItemRow>
             <ItemRow>
-                <DescriptionPart>Tax ({taxRate * 100}%)</DescriptionPart>
+                <DescriptionPart>Tax ({taxRate}%)</DescriptionPart>
                 <PricePart><CurrencyInput value={tax} disabled /></PricePart>
             </ItemRow>
             <ItemRow>
