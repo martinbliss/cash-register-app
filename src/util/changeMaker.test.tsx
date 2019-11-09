@@ -14,7 +14,7 @@ interface TestCase {
 const testCases = _.range(0, 50).map(_ => {
     const total = new Decimal(new Decimal(Math.random() * 1000).toFixed(2)).toNumber();
     const tender = new Decimal(new Decimal(total).add(Math.random() * 100).toFixed(2)).toNumber();
-    const balance = new Decimal(new Decimal(tender).minus(total)).toFixed(2).toNumber();
+    const balance = new Decimal(new Decimal(tender).minus(total).toFixed(2)).toNumber();
 
     return {
         total,
