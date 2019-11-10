@@ -38,28 +38,4 @@ export const makeChange = (total: number, tender: number): TransactionResult => 
 
 
 
-const getDenominations = (balance: number): Denominations => {
-    const rankedDenominations = _.orderBy(Object.keys(denominationConfiguration).map(key => ({ key, ...(denominationConfiguration as DenominationConfiguration)[key] })), ['value'], ['desc']);
-
-    let remainingBalance = new Decimal(balance);
-    const result = rankedDenominations.reduce((sum, n) => {
-        if (remainingBalance.gt(0)) {
-            const splitRemainder = remainingBalance.dividedBy(n.value).floor();
-
-            if (splitRemainder.gte(1)) {
-                const realizedValue = (new Decimal(n.value).times(splitRemainder)).toFixed(2);
-                remainingBalance = remainingBalance.minus(realizedValue);
-
-                sum[n.key] = {
-                    caption: n.caption,
-                    count: splitRemainder.toNumber()
-                };
-            }
-        }
-
-        return sum;
-    }, {} as Denominations);
-
-    return result;
-}
-
+const getDenominations = (balance: number): Denominations => ({});
