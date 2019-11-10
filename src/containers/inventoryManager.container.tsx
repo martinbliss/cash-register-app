@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { Inventory, InventoryItem } from "../util";
 import { CurrencyInput } from "../components";
@@ -14,22 +14,32 @@ interface RowProps {
 
 const Container = styled.div`
     font-size: 24px;
-
+    
     input {
         font-size: 24px;
+    }
+`;
+
+const Table = styled.table`
+    margin: 64px auto;
+
+    th {
+        color: #e67e22;
     }
 `;
 
 const Label = styled.label`
     color: white;
     text-align: left;
+    display: block;
+    padding: 6px 18px;
 `;
 
 const Row = ({ item, onChange }: RowProps) => {
     const { key, description, image, price } = item;
 
-    const handleChange = (field = '') => (e: React.ChangeEvent<HTMLInputElement>) => onChange({ ...item, [field]: e.target.value });
-    const handleCurrencyChange = (field = '') => (value: number) => onChange({ ...item, [field]: value });
+    const handleChange = (field: keyof InventoryItem) => (e: React.ChangeEvent<HTMLInputElement>) => onChange({ ...item, [field]: e.target.value });
+    const handleCurrencyChange = (field: keyof InventoryItem) => (value: number) => onChange({ ...item, [field]: value });
 
     return <tr>
         <Label>{key}</Label>
@@ -41,12 +51,17 @@ const Row = ({ item, onChange }: RowProps) => {
 
 export const InventoryManagerContainerComponent = ({ }: Props) => {
 
-    const rows = Object.keys(Inventory).map(key => ({ key, ...Inventory[key] })).map((item, index) =>
-        <Row item={item} key={index} onChange={changedItem => Inventory[item.key] = changedItem} />
+    const [inventory, setInventory] = useState(Inventory);
+
+    const rows = Object.keys(inventory).map(key => ({ key, ...Inventory[key] })).map((item, index) =>
+        <Row item={item} key={index} onChange={changedItem => {
+            Inventory[item.key] = changedItem;
+            setInventory({ ...Inventory }); // Even though we're updating the Inventory config, we need to change component state to cause a re-render.
+        }} />
     );
 
     return <Container>
-        <table>
+        <Table>
             <thead>
                 <tr>
                     <th>Item</th>
@@ -58,7 +73,7 @@ export const InventoryManagerContainerComponent = ({ }: Props) => {
             <tbody>
                 {rows}
             </tbody>
-        </table>
+        </Table>
     </Container>;
 }
 

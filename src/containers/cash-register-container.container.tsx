@@ -11,6 +11,7 @@ import Decimal from 'decimal.js';
 import { InventoryItem } from '../util';
 import { TenderModal } from '../components/tenderModal.component';
 import { Route, RouteComponentProps, Link, useLocation, useHistory } from 'react-router-dom';
+import { Sales } from '../util/sales.service';
 
 Decimal.set({ precision: 5, rounding: 2 });
 
@@ -63,9 +64,9 @@ export const CashRegisterContainerComponent = ({ }: Props) => {
     const [tender, setTender] = useState(0);
     const [changeAmount, setChangeAmount] = useState({} as TenderChangeAmount);
 
-    const taxRatePercentage = new Decimal(TaxConfig.taxRate).mul(100).toFixed(2);
+    const taxRatePercentage = new Decimal(Sales.taxRate).mul(100).toFixed(2);
     const subTotal = useMemo(() => _.sum(items.map(i => i.price)).toString(), [items]);
-    const tax = new Decimal(subTotal).mul(1 + TaxConfig.taxRate).toFixed(2);
+    const tax = new Decimal(subTotal).mul(Sales.taxRate);//.toFixed(2);
     const total = new Decimal(subTotal).plus(tax).toString();
 
     const handleItemSelection = (item: InventoryItem) => setItems([...items, item]);
@@ -79,7 +80,7 @@ export const CashRegisterContainerComponent = ({ }: Props) => {
         history.push('/tender');
     }
     const handleTenderCancel = () => {
-        history.goBack();
+        history.push('/');
     };
 
 
@@ -94,7 +95,7 @@ export const CashRegisterContainerComponent = ({ }: Props) => {
             <InventoryBar onItemSelected={handleItemSelection} />
         </Row>
         <Row>
-            <Button disabled={!total} onClick={handleTenderClick}>
+            <Button disabled={!total || new Decimal(total).lessThan(Sales.minimumTotal)} onClick={handleTenderClick}>
                 Tender
             </Button>
         </Row>
