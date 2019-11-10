@@ -10,6 +10,7 @@ import { SalesConfigurationContainer } from './containers/salesConfiguration.con
 const AppContainer = styled.div`
   display: flex;
   flex-direction: column;
+  margin: 0 auto;
 `;
 
 const Section = styled.div`
@@ -18,9 +19,13 @@ const Section = styled.div`
 
 const GrowthSection = styled.div`
   flex-grow: 1;
-  background-color: #34495e;
-  max-width: 1600px;
-  margin: 64px auto;
+  margin: 0 auto;
+  max-width: 1600px;  
+`;
+
+const BackgroundCanvas = styled.div`
+    background-color: #34495e;
+    padding: 64px;
 `;
 
 const Tabs = styled.div`
@@ -63,11 +68,13 @@ const App = ({ }) => {
         </Tabs>
       </Section>
       <GrowthSection>
-        <Switch>
-          <Route path="/inventory" component={InventoryManagerContainer} />
-          <Route path="/sales" component={SalesConfigurationContainer} />
-          <Route path="/" component={CashRegisterContainer} />
-        </Switch>
+        <BackgroundCanvas>
+          <Switch>
+            <Route path="/inventory" component={InventoryManagerContainer} />
+            <Route path="/sales" component={SalesConfigurationContainer} />
+            <Route path="/" component={CashRegisterContainer} />
+          </Switch>
+        </BackgroundCanvas>
       </GrowthSection>
     </AppContainer>
   </BrowserRouter>;
